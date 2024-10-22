@@ -28,8 +28,6 @@ body {
     
 }
 
- 
-
 .navbar-brand {
     font-size: 3rem; /* Aumenta o tamanho da fonte */
     color: transparent; /* Se quiser manter o efeito de degradê, mas mude a cor se necessário */
@@ -129,6 +127,7 @@ form {
 .card:hover {
     transform: translateY(-10px);
 }
+
 
 .card img {
     border-top-left-radius: 12px;

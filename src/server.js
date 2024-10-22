@@ -4,11 +4,14 @@ const bodyParser = require('body-parser');
 const supabase = require('./supabaseClient'); // Importa o cliente Supabase
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const auth = require('./auth')
+const auth = require('./auth');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+// Servir arquivos estáticos da pasta 'public'
+app.use(express.static('public'));
 
 // Rota para listar produtos
 app.get('/produtos', async (req, res) => {
@@ -32,10 +35,10 @@ app.get('/produtos', async (req, res) => {
 app.post('/produtos', async (req, res) => {
   const { nome, descricao, numero } = req.body;
 
-  // Verificação de número
-  const numeroValido = /^\d{10,15}$/.test(numero);
+  // Verificação de número com código do país
+  const numeroValido = /^\d{12,15}$/.test(numero);
   if (!numeroValido) {
-      return res.status(400).send('Número inválido!');
+    return res.status(400).send('Número inválido! Deve incluir o código do país.');
   }
 
   // Gerar o link do WhatsApp
@@ -62,7 +65,6 @@ app.post('/produtos', async (req, res) => {
     res.status(500).send('Erro ao adicionar produto');
   }
 });
-
 
 // Rota para deletar produto
 app.delete('/produtos/:id', async (req, res) => {
@@ -109,6 +111,10 @@ app.post('/whatsapp', async (req, res) => {
     // Gerar o link do WhatsApp
     const whatsappLink = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
 
+    // Log para depuração
+    console.log('Número WhatsApp:', numeroWhatsApp);
+    console.log('Link do WhatsApp:', whatsappLink);
+
     // Redirecionar o usuário para o link do WhatsApp
     res.status(200).json({ message: 'Mensagem enviada com sucesso!', link: whatsappLink });
   } catch (error) {
@@ -122,25 +128,25 @@ app.get('/produtos/:id', async (req, res) => {
   const { id } = req.params; // Obtém o ID do produto
 
   try {
-      const { data, error } = await supabase
-          .from('produtos')
-          .select('*')
-          .eq('id', id)
-          .single(); // Espera um único resultado
+    const { data, error } = await supabase
+      .from('produtos')
+      .select('*')
+      .eq('id', id)
+      .single(); // Espera um único resultado
 
-      if (error) {
-          console.error('Erro ao acessar o banco de dados:', error.message);
-          return res.status(500).send('Erro ao acessar o banco de dados');
-      }
+    if (error) {
+      console.error('Erro ao acessar o banco de dados:', error.message);
+      return res.status(500).send('Erro ao acessar o banco de dados');
+    }
 
-      if (!data) {
-          return res.status(404).json({ message: 'Produto não encontrado' });
-      }
+    if (!data) {
+      return res.status(404).json({ message: 'Produto não encontrado' });
+    }
 
-      res.json(data); // Retorna o produto encontrado
+    res.json(data); // Retorna o produto encontrado
   } catch (error) {
-      console.error('Erro ao obter produto:', error.message);
-      res.status(500).send('Erro ao obter produto');
+    console.error('Erro ao obter produto:', error.message);
+    res.status(500).send('Erro ao obter produto');
   }
 });
 
@@ -168,10 +174,27 @@ app.put('/produtos/:id', async (req, res) => {
   }
 });
 
+// Rota para cadastrar usuário
 app.post('/usuario', async (req, res) => {
   const { nome, email, senha } = req.body;
 
   try {
+    // Verificar se o email já existe
+    const { data: existingUser, error: emailCheckError } = await supabase
+      .from('usuario')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (emailCheckError && emailCheckError.code !== 'PGRST116') {
+      console.error('Erro ao verificar email:', emailCheckError);
+      return res.status(500).json({ message: 'Erro ao verificar email', details: emailCheckError.message });
+    }
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email já está em uso' });
+    }
+
     // Criptografar a senha usando bcrypt
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(senha, saltRounds);
@@ -179,10 +202,22 @@ app.post('/usuario', async (req, res) => {
     // Inserir o usuário no banco de dados com a senha criptografada
     const { data, error } = await supabase
       .from('usuario')
-      .insert([{ nome, email, senha: hashedPassword }]);
+      .insert([{ nome, email, senha: hashedPassword }])
+      .select(); // Adiciona o .select() aqui para retornar os dados inseridos
+
+    // Log para verificar a resposta da inserção
+    console.log('Dados enviados para inserção:', { nome, email, senha: hashedPassword });
+    console.log('Dados retornados após inserção:', data);
+    console.log('Erro na inserção:', error);
 
     if (error) {
-      throw error;
+      console.error('Erro ao adicionar usuário:', error);
+      return res.status(500).json({ message: 'Erro ao adicionar usuário', details: error.message });
+    }
+
+    // Verificação de dados após inserção
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return res.status(500).json({ message: 'Erro ao adicionar usuário, nenhum dado retornado' });
     }
 
     res.status(201).json({ message: 'Usuário criado com sucesso', user: data[0] });
@@ -213,6 +248,7 @@ app.post('/usuario/login', async (req, res) => {
       return res.status(401).json({ message: 'Senha incorreta' });
     }
 
+    // Armazenar o nome do usuário no localStorage
     const token = jwt.sign(
       {}, 
       'sua_chave_secreta_aqui',
@@ -221,8 +257,14 @@ app.post('/usuario/login', async (req, res) => {
         expiresIn: '1d'
       }
     );
-    
-    res.status(201).json({ token: token, idusuario: usuario.idcliente, logado: true });
+
+    // Enviar nome e token como resposta
+    res.status(201).json({ 
+      token: token, 
+      idusuario: usuario.idcliente, 
+      logado: true,
+      nome: usuario.nome // Enviando o nome do usuário
+    });
     
   } catch (error) {
     console.error('Erro ao fazer login:', error.message);
@@ -230,8 +272,8 @@ app.post('/usuario/login', async (req, res) => {
   }
 });
 
+// Inicializar o servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
-

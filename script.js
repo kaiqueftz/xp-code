@@ -130,9 +130,6 @@ async function editarProduto(event) {
     }
 }
 
-// Não se esqueça de adicionar a chamada para carregar a lista de produtos ao iniciar a página
-atualizarListaDeProdutos();
-
 // Função para deletar produto (DELETE)
 async function deletarProduto(id) {
     try {
@@ -155,8 +152,5 @@ async function deletarProduto(id) {
     }
 }
 
-
 // Carrega os produtos ao iniciar a página
 document.addEventListener('DOMContentLoaded', atualizarListaDeProdutos);
-
-
