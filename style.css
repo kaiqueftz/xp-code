@@ -1,0 +1,188 @@
+/* Estilos globais */
+* {
+    font-family: 'Montserrat', sans-serif; /* Define a Montserrat para todos os elementos */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: 700; /* Aplica o peso bold (negrito) */
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* Alterado para Roboto para um visual mais moderno */
+    background-color: #f8f9fa, #5a5d5f;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Isso garante que não haja rolagem lateral */
+}
+
+.navbar {
+    
+        background: linear-gradient(135deg, #00a84c, #00e9e9); /* Degradê do cabeçalho */
+        padding: 30px; /* Ajuste de padding se necessário */
+        color: white; /* Cor do texto para contraste */
+        text-align: center; /* Centraliza o conteúdo dentro do cabeçalho */
+        font-size: 5.2rem
+        
+    
+    
+}
+
+ 
+
+.navbar-brand {
+    font-size: 3rem; /* Aumenta o tamanho da fonte */
+    color: transparent; /* Se quiser manter o efeito de degradê, mas mude a cor se necessário */
+    background: linear-gradient(45deg, #ffffff, #c6f7e4, #ffffff); /* Degradê para o texto */
+    -webkit-background-clip: text; /* Clipa o fundo ao texto */
+    background-clip: text; /* Clipa o fundo ao texto */
+    margin-left: 0; /* Ajuste conforme necessário */
+    padding-left: 0; /* Ajuste para mover para a esquerda */
+    padding-right: 20px; /* Ajuste o padding à direita se necessário */
+}
+
+.navbar-nav .nav-link {
+    color: transparent; 
+    background: linear-gradient(45deg, #ffffff, #23eea0, #ffffff); 
+    -webkit-background-clip: text; 
+    background-clip: text; 
+    text-decoration: none;
+    margin: 0 15px; 
+    font-size: 1.2rem; 
+    transition: color 0.3s ease; 
+}
+
+.navbar-nav .nav-link:hover {
+    color: transparent; 
+    background: linear-gradient(45deg, #c6f7e4, #ffffff); 
+    -webkit-background-clip: text; 
+    background-clip: text; 
+}
+
+/* Remover o background no hover */
+.navbar-nav .nav-link:hover {
+    background: none; 
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+}
+.container-fluid {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+
+/* Header Carousel */
+#carouselMain {
+    width: 100vw;
+    overflow: hidden; /* Oculta qualquer conteúdo que vá além da largura */
+    position: relative;
+    margin-top: -15px;
+}
+
+
+#carouselMain .carousel-item img {
+    transform: translateX(-10px); /* Move a imagem 10px para a esquerda */
+    width: 100vw; /* Mantém a largura ocupando toda a viewport */
+    height: 450px;
+    object-fit: cover;
+}
+  .carousel-inner {
+    width: 100%; 
+    padding: 0;/* Garante que o conteúdo interno do carrossel ocupe 100% da largura */
+  }
+
+/* Formulário */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 0; /* Torna as bordas quadradas */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Largura total do contêiner pai */
+    max-width: 400px; /* Largura máxima para o formulário */
+    margin: 0 auto; /* Centraliza o formulário */
+}
+
+form .form-control {
+    border: 1px solid #28a745;
+}
+#produtosContainer {
+    margin-bottom: 60px; /* Espaço entre os produtos e o formulário */
+}
+
+/* Alternativamente, você pode adicionar margem superior no formulário */
+form {
+    margin-top: 30px; /* Espaço acima do formulário */
+}
+/* Cards de produtos */
+.card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    border-radius: 12px;
+     
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card img {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-weight: bold; /* Deixa o título dos cards mais destacado */
+}
+
+.card-text {
+    color: #666; /* Cor sutil para o texto dos cards */
+}
+
+.card .btn-primary {
+    background-color: #28a745;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.card .btn-primary:hover {
+    background-color: #218838;
+}
+
+/* Rodapé */
+footer {
+    background: linear-gradient(135deg, #00a84c, #00e9e9);
+    padding: 20px 0;
+    text-align: center; /* Centraliza o conteúdo no rodapé */
+    font-size: 0.9rem; /* Diminui o tamanho da fonte no rodapé */
+    color: #333;
+    border-top: 1px solid #e7e7e7; /* Linha sutil separando o rodapé do conteúdo principal */
+}
+
+footer .text-muted {
+    color: #6c757d;
+}
+
+footer a {
+    color: #28a745;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #218838;
+}
+
+footer .row div {
+    padding: 10px 0;
+}
+
+.text-dark {
+    color: #333 !important;
+}
