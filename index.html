@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <title>XepaSocial</title>
@@ -31,23 +33,18 @@
         </ul>
         <div class="align-self-end">
           <ul class="navbar-nav">
-            <div id="entrarDeslogar" class="d-flex flex-column align-items-center justify-content-center vh-50"> <!-- Ajuste a altura se necessário -->
+            <div id="entrarDeslogar" class="d-flex flex-column align-items-center justify-content-center">
               <div id="usuarioNome" class="alert alert-success d-none" role="alert"></div>
-              <button id="logoutButton" class="btn btn-success btn-sm mt-2" onclick="logout()">Logout</button> <!-- btn-sm para deixar menor e mt-2 para margem superior -->
-          </div>          
-            <li class="nav-item">
+              <button id="logoutButton" class="btn btn-success btn-sm mt-2 d-none" onclick="logout()">Logout</button>
+            </div>
+            <li class="nav-item" id="cadastroLink">
               <a href="cadastro.html" class="nav-link text-white">Quero Me Cadastrar</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="entrarLink">
               <a href="entrar.html" class="nav-link text-white">Entrar</a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-                </svg>
               </a>
             </li>
           </ul>
@@ -94,40 +91,48 @@
         <!-- Produtos serão carregados aqui -->
       </div>
 
-      <h2 class="text-center mb-4">Adicionar Novo Produto</h2>
-      <form id="produtoForm" class="mb-5">
-        <div class="mb-3">
-          <label for="nome" class="form-label">Nome do Produto</label>
-          <input type="text" class="form-control" id="nome" required>
-        </div>
-        <div class="mb-3">
-          <label for="descricao" class="form-label">Descrição do Produto</label>
-          <input type="text" class="form-control" id="descricao" required>
-        </div>
-        <div class="mb-3">
-          <label for="numero" class="form-label">Número de WhatsApp</label>
-          <input type="text" class="form-control" id="numero" placeholder="Ex: 5561977775555" required>
-        </div>
-        <button type="submit" class="btn btn-success">Adicionar Produto</button>
-      </form>
+      <a href="adicionarProduto.html" class="btn btn-outline-secondary mb-5 add-product-btn">
+        <i class="bi bi-plus"></i> Adicionar Novo Produto
+      </a>
+
+      <div class="formAddProduto">
+        <h2 class="text-center mb-4">Adicionar Novo Produto</h2>
+        <form id="produtoForm" class="mb-5">
+          <div class="mb-3">
+            <label for="nome" class="form-label">Nome do Produto</label>
+            <input type="text" class="form-control" id="nome" required>
+          </div>
+          <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição do Produto</label>
+            <input type="text" class="form-control" id="descricao" required>
+          </div>
+          <div class="mb-3">
+            <label for="numero" class="form-label">Número de WhatsApp</label>
+            <input type="text" class="form-control" id="numero" placeholder="Ex: 5561977775555" required>
+          </div>
+          <button type="submit" class="btn btn-success">Adicionar Produto</button>
+        </form>
+      </div>
 
       <!-- Novo Formulário para Edição -->
-      <h2 class="text-center mb-4">Editar Produto</h2>
-      <form id="produtoEditForm" class="mb-5" style="display: none;">
-        <div class="mb-3">
-          <label for="editNome" class="form-label">Nome do Produto</label>
-          <input type="text" class="form-control" id="editNome" required>
-        </div>
-        <div class="mb-3">
-          <label for="editDescricao" class="form-label">Descrição do Produto</label>
-          <input type="text" class="form-control" id="editDescricao" required>
-        </div>
-        <div class="mb-3">
-          <label for="editNumero" class="form-label">Número de WhatsApp</label>
-          <input type="text" class="form-control" id="editNumero" placeholder="Ex: 5561977775555" required>
-        </div>
-        <button type="submit" class="btn btn-warning">Atualizar Produto</button>
-      </form>
+      <div class="formEditProduto">
+        <h2 class="text-center mb-4"></h2>
+        <form id="produtoEditForm" class="mb-5" style="display: none;">
+          <div class="mb-3">
+            <label for="editNome" class="form-label">Nome do Produto</label>
+            <input type="text" class="form-control" id="editNome" required>
+          </div>
+          <div class="mb-3">
+            <label for="editDescricao" class="form-label">Descrição do Produto</label>
+            <input type="text" class="form-control" id="editDescricao" required>
+          </div>
+          <div class="mb-3">
+            <label for="editNumero" class="form-label">Número de WhatsApp</label>
+            <input type="text" class="form-control" id="editNumero" placeholder="Ex: 5561977775555" required>
+          </div>
+          <button type="submit" class="btn btn-warning">Atualizar Produto</button>
+        </form>
+      </div>
     </div>
   </main>
 

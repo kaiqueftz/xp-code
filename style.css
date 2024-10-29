@@ -16,6 +16,67 @@ body {
     overflow-x: hidden; /* Isso garante que não haja rolagem lateral */
 }
 
+#entrarDeslogar {
+    display: flex;
+    margin-left: -15%;
+    padding: 1rem; /* Aumenta o espaçamento interno para dar mais respiro */
+    border-radius: 12px; /* Aumenta o arredondamento das bordas */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Aumenta a sombra para um efeito mais elevado */
+    max-width: 250px; /* Limita a largura do contêiner para uma melhor proporção */
+    background-color: rgba(248, 249, 250, 0); /* Aplique uma cor de fundo com leve opacidade */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Transições suaves para hover */
+}
+
+#entrarDeslogar:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Efeito de sombra ao passar o mouse */
+    transform: translateY(-2px); /* Levanta ligeiramente o contêiner ao passar o mouse */
+}
+
+#usuarioNome {
+    font-weight: 600; /* Aumenta o peso da fonte para maior ênfase */
+    font-size: 1.1rem; /* Aumenta o tamanho da fonte */
+    border-radius: 4px;
+    text-align: center;
+    white-space: nowrap; /* Evita quebras de linha */
+    padding: 0.5rem; /* Adiciona um pouco de espaçamento interno */
+    color: #155724; /* Cor do texto (verde) */
+    background-color: rgba(92, 184, 92, 0.1); /* Fundo levemente colorido para destacar */
+    border: 1px solid rgba(92, 184, 92, 0.3); /* Borda sutil para dar definição */
+    margin-bottom: 1rem; /* Espaço abaixo do nome do usuário */
+}
+
+.btn-success {
+    background-color: #28a745; /* Verde mais moderno */
+    border-color: #28a745; /* Mantém a cor da borda igual ao fundo */
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Efeito hover mais escuro */
+    border-color: #1e7e34; /* Mantém a borda mais escura ao passar o mouse */
+}
+
+.formAddProduto{
+    display: none;
+}
+
+.add-product-btn {
+    display: flex;
+    justify-content: center;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: -4%;
+    color: #6c757d; /* Cor de texto cinza */
+    background-color: rgba(108, 117, 125, 0.1); /* Fundo cinza claro com transparência */
+    border: 1px solid #6c757d; /* Borda cinza */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.add-product-btn:hover {
+    background-color: rgba(108, 117, 125, 0.2); /* Fundo um pouco mais escuro no hover */
+    color: #495057; /* Cor do texto mais escura no hover */
+}
+
+
 .navbar {
     
         background: linear-gradient(135deg, #00a84c, #00e9e9); /* Degradê do cabeçalho */

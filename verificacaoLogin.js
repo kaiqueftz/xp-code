@@ -33,17 +33,29 @@ function logout() {
 
 // Função para exibir o nome do usuário
 function exibirNomeUsuario(nome) {
-    const usuarioNomeElement = document.getElementById('usuarioNome');
-    if (nome && nome.trim() !== '') {
+  const usuarioNomeElement = document.getElementById('usuarioNome');
+  const cadastroLink = document.getElementById('cadastroLink');
+  const entrarLink = document.getElementById('entrarLink');
+  const logoutButton = document.getElementById('logoutButton');
+
+  if (nome && nome.trim() !== '') {
       usuarioNomeElement.innerText = `Bem-vindo, ${nome}!`;
       usuarioNomeElement.classList.remove('d-none'); // Remove a classe d-none para exibir
-    } else {
+      cadastroLink.classList.add('d-none'); // Oculta o link de cadastro
+      entrarLink.classList.add('d-none'); // Oculta o link de entrar
+      logoutButton.classList.remove('d-none'); // Mostra o botão de logout
+  } else {
       usuarioNomeElement.classList.add('d-none'); // Adiciona d-none para esconder
-    }
+      cadastroLink.classList.remove('d-none'); // Mostra o link de cadastro
+      entrarLink.classList.remove('d-none'); // Mostra o link de entrar
+      logoutButton.classList.add('d-none'); // Oculta o botão de logout
+  }
 }
 
 // Ao carregar a página
 window.onload = function() {
-    const nome = localStorage.getItem('nome');
-    exibirNomeUsuario(nome);
+  const nome = localStorage.getItem('nome');
+  exibirNomeUsuario(nome);
 };
+
+
