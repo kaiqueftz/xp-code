@@ -7,6 +7,13 @@
     font-weight: 700; /* Aplica o peso bold (negrito) */
 }
 
+#precoProduto{
+    display: flex;
+    align-self: center;
+    margin-bottom: 10%;
+    font-size: 1.5rem;
+}
+
 body {
     font-family: 'Roboto', sans-serif; /* Alterado para Roboto para um visual mais moderno */
     background-color: #f8f9fa, #5a5d5f;
@@ -78,15 +85,11 @@ body {
 
 
 .navbar {
-    
         background: linear-gradient(135deg, #00a84c, #00e9e9); /* Degradê do cabeçalho */
         padding: 30px; /* Ajuste de padding se necessário */
         color: white; /* Cor do texto para contraste */
         text-align: center; /* Centraliza o conteúdo dentro do cabeçalho */
         font-size: 5.2rem
-        
-    
-    
 }
 
 .navbar-brand {

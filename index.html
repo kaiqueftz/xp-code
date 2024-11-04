@@ -91,7 +91,7 @@
         <!-- Produtos serão carregados aqui -->
       </div>
 
-      <a href="adicionarProduto.html" class="btn btn-outline-secondary mb-5 add-product-btn">
+      <a href="adicionarProduto.html" id="btnAdicionarProduto" class="btn btn-outline-secondary mb-5 add-product-btn">
         <i class="bi bi-plus"></i> Adicionar Novo Produto
       </a>
 
@@ -99,19 +99,23 @@
         <h2 class="text-center mb-4">Adicionar Novo Produto</h2>
         <form id="produtoForm" class="mb-5">
           <div class="mb-3">
-            <label for="nome" class="form-label">Nome do Produto</label>
-            <input type="text" class="form-control" id="nome" required>
+              <label for="nome" class="form-label">Nome do Produto</label>
+              <input type="text" class="form-control" id="nome" required>
           </div>
           <div class="mb-3">
-            <label for="descricao" class="form-label">Descrição do Produto</label>
-            <input type="text" class="form-control" id="descricao" required>
+              <label for="descricao" class="form-label">Descrição do Produto</label>
+              <input type="text" class="form-control" id="descricao" required>
           </div>
           <div class="mb-3">
-            <label for="numero" class="form-label">Número de WhatsApp</label>
-            <input type="text" class="form-control" id="numero" placeholder="Ex: 5561977775555" required>
+              <label for="numero" class="form-label">Número de WhatsApp</label>
+              <input type="text" class="form-control" id="numero" placeholder="Ex: 5561977775555" required>
+          </div>
+          <div class="mb-3">
+              <label for="preco" class="form-label">Preço (R$)</label>
+              <input type="number" class="form-control" id="preco" placeholder="Ex: 100.00" step="0.01" min="0" required>
           </div>
           <button type="submit" class="btn btn-success">Adicionar Produto</button>
-        </form>
+      </form>
       </div>
 
       <!-- Novo Formulário para Edição -->
@@ -121,6 +125,10 @@
           <div class="mb-3">
             <label for="editNome" class="form-label">Nome do Produto</label>
             <input type="text" class="form-control" id="editNome" required>
+          </div>
+          <div class="mb-3">
+            <label for="editPreco" class="form-label">Preço do Produto</label>
+            <input type="text" class="form-control" id="editPreco" required>
           </div>
           <div class="mb-3">
             <label for="editDescricao" class="form-label">Descrição do Produto</label>

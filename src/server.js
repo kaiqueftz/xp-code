@@ -31,9 +31,11 @@ app.get('/produtos', async (req, res) => {
   }
 });
 
+//checkpoint
+
 // Rota para adicionar produto
 app.post('/produtos', async (req, res) => {
-  const { nome, descricao, numero } = req.body;
+  const { nome, descricao, numero, preco } = req.body;
 
   // Verificação de número com código do país
   const numeroValido = /^\d{12,15}$/.test(numero);
@@ -47,7 +49,7 @@ app.post('/produtos', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('produtos')
-      .insert([{ nome, descricao, whatsapp_link: whatsappLink }]) // Inclua o whatsapp_link
+      .insert([{ nome, descricao, whatsapp_link: whatsappLink, preco }]) // Inclua o whatsapp_link
       .select();
 
     if (error) {
@@ -153,12 +155,12 @@ app.get('/produtos/:id', async (req, res) => {
 // Rota para editar produto
 app.put('/produtos/:id', async (req, res) => {
   const { id } = req.params;
-  const { nome, descricao } = req.body;
+  const { nome, descricao, numero, preco } = req.body;
 
   try {
     const { data, error } = await supabase
       .from('produtos')
-      .update({ nome, descricao })
+      .update({ nome, descricao, numero, preco })
       .eq('id', id)
       .select();
 
@@ -173,6 +175,7 @@ app.put('/produtos/:id', async (req, res) => {
     res.status(500).send('Erro ao editar produto');
   }
 });
+
 
 // Rota para cadastrar usuário
 app.post('/usuario', async (req, res) => {

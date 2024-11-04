@@ -8,6 +8,7 @@ async function adicionarProduto(event) {
     const nome = document.getElementById('nome').value;
     const descricao = document.getElementById('descricao').value;
     const numero = document.getElementById('numero').value;
+    const preco = document.getElementById('preco').value;
 
     // Verificação de número
     const numeroValido = /^\d{10,15}$/.test(numero); 
@@ -24,7 +25,7 @@ async function adicionarProduto(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, descricao, numero, whatsapp_link: whatsappLink }),
+            body: JSON.stringify({ nome, descricao, numero, whatsapp_link: whatsappLink, preco }),
         });
 
         if (response.ok) {
@@ -39,7 +40,7 @@ async function adicionarProduto(event) {
         alert('Erro ao se conectar ao servidor.');
     }
 }
-
+//checkpointdf
 // Função para atualizar a lista de produtos (GET)
 async function atualizarListaDeProdutos() {
     try {
@@ -49,6 +50,10 @@ async function atualizarListaDeProdutos() {
         // Limpar os produtos existentes
         const produtosContainer = document.getElementById('produtosContainer');
         produtosContainer.innerHTML = '';
+
+        // Verifica se o usuário está logado
+        const nomeUsuario = localStorage.getItem('nome'); // Obtém o nome do usuário do localStorage
+        const usuarioLogado = nomeUsuario && nomeUsuario.trim() !== ''; // Verifica se o usuário está logado
 
         // Adicionar novos produtos à página
         produtos.forEach(produto => {
@@ -60,19 +65,23 @@ async function atualizarListaDeProdutos() {
                     <div class="card-body d-flex flex-column justify-content-between">
                         <h5 class="card-title">${produto.nome}</h5>
                         <p class="card-text">${produto.descricao}</p>
+                        <h5 id="precoProduto" class="card-title"> R$ ${produto.preco}</h5>
                         <a href="${produto.whatsapp_link}" target="_blank" class="btn btn-primary w-75 align-self-center mb-2">WhatsApp</a>
-                        <button class="btn btn-warning w-75 align-self-center mb-2" onclick="carregarProdutoParaEdicao(${produto.id})">Editar</button>
-                        <button class="btn btn-danger w-75 align-self-center" onclick="deletarProduto(${produto.id})">Excluir</button>
+                        ${usuarioLogado ? `
+                            <button id="btnEditar" class="btn btn-warning w-75 align-self-center mb-2" onclick="carregarProdutoParaEdicao(${produto.id})">Editar</button>
+                            <button id="btnDeletar" class="btn btn-danger w-75 align-self-center" onclick="deletarProduto(${produto.id})">Excluir</button>
+                        ` : ''}
                     </div>
                 </div>
             `;
             produtosContainer.appendChild(produtoDiv);
         });
-        
+
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
     }
 }
+
 
 // Função para carregar os dados do produto no formulário de edição
 function carregarProdutoParaEdicao(id) {
@@ -82,6 +91,7 @@ function carregarProdutoParaEdicao(id) {
             document.getElementById('editNome').value = produto.nome;
             document.getElementById('editDescricao').value = produto.descricao;
             document.getElementById('editNumero').value = produto.numero;
+            document.getElementById('editPreco').value = produto.preco;
 
             // Mostra o formulário de edição e oculta o formulário de adição
             document.getElementById('produtoEditForm').style.display = 'block';
@@ -105,6 +115,7 @@ async function editarProduto(event) {
     const nome = document.getElementById('editNome').value;
     const descricao = document.getElementById('editDescricao').value;
     const numero = document.getElementById('editNumero').value;
+    const preco = document.getElementById('editPreco').value;
 
     try {
         const response = await fetch(`http://localhost:3000/produtos/${id}`, {
@@ -112,7 +123,7 @@ async function editarProduto(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, descricao, numero }),
+            body: JSON.stringify({ nome, descricao, numero, preco }),
         });
 
         if (response.ok) {
@@ -151,6 +162,7 @@ async function deletarProduto(id) {
         alert('Erro ao se conectar ao servidor.');
     }
 }
+
 
 // Carrega os produtos ao iniciar a página
 document.addEventListener('DOMContentLoaded', atualizarListaDeProdutos);
