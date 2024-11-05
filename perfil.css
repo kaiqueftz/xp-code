@@ -1,0 +1,13 @@
+/* Estilos para o perfil */
+body {
+    background-color: #f8f9fa; /* Cor de fundo suave */
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com transparência */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+h2 {
+    font-weight: bold;
+}

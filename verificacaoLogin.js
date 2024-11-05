@@ -15,6 +15,7 @@ async function login() {
 
   if (response.ok) {
       localStorage.setItem('nome', data.nome); // Armazena o nome no localStorage
+      localStorage.setItem('usuarioId', data.usuarioId); // Armazena o ID do usuário no localStorage
       exibirNomeUsuario(data.nome); // Exibe o nome do usuário
       console.log(`Usuário logado: ${data.nome}`); // Mensagem de login no console
       // Redirecione ou faça outra ação, se necessário
@@ -25,14 +26,16 @@ async function login() {
 
 // Função de logout
 function logout() {
-  // Remove o nome do usuário do localStorage
+  // Remove o nome e o ID do usuário do localStorage
   localStorage.removeItem('nome');
+  localStorage.removeItem('usuarioId'); // Limpa o ID do usuário
   // Atualiza a interface para esconder o nome do usuário
   exibirNomeUsuario(''); // Passa uma string vazia para esconder
   console.log('Usuário deslogado'); // Mensagem de logout no console
   alert('Você foi desconectado com sucesso!');
   location.reload(); // Recarrega a página
 }
+
 
 // Função para exibir o nome do usuário
 function exibirNomeUsuario(nome) {
@@ -72,13 +75,17 @@ function exibirBotaoAdicionarProduto() {
 // Ao carregar a página
 window.onload = function() {
   const nome = localStorage.getItem('nome');
+  const usuarioId = localStorage.getItem('usuarioId'); // Obtém o ID do usuário
+
   exibirNomeUsuario(nome);
   exibirBotaoAdicionarProduto();
-  
+
   // Verificação de login
-  if (nome && nome.trim() !== '') {
+  if (nome && nome.trim() !== '' && usuarioId) {
       console.log('Usuário está logado');
+      buscarDadosUsuario(); // Carrega os dados do usuário
   } else {
       console.log('Usuário não está logado');
   }
 };
+

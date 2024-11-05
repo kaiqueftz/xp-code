@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script type="module" src="meuPerfil.js"></script> 
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-5">Meu Perfil</h1>
+    <form id="perfilForm" class="mt-4">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" class="form-control" id="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="senha">Senha:</label>
+            <input type="password" class="form-control" id="senha" required>
+        </div>
+        <div class="form-group">
+            <label for="cnpj">CNPJ:</label>
+            <input type="text" class="form-control" id="cnpj" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="descricao">Descrição da Loja:</label>
+            <textarea class="form-control" id="descricao" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="cep">CEP:</label>
+            <input type="text" class="form-control" id="cep" required placeholder="Digite Apenas Números">
+            <button type="button" class="btn btn-secondary mt-2" onclick="buscarCEP()">Buscar CEP</button>
+        </div>        
+        <div class="form-group">
+            <label for="endereco">Endereço:</label>
+            <input type="text" class="form-control" id="endereco" readonly>
+        </div>        
+        <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="text" class="form-control" id="telefone" required>
+        </div>
+        <div class="form-group">
+            <label for="horario">Horário de Funcionamento:</label>
+            <input type="text" class="form-control" id="horario">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="atualizarConta()">Atualizar Conta</button>
+        <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>
+    </form>
+    <div id="mensagem" class="mt-3"></div>
+</div>
+
+</body>
+</html>

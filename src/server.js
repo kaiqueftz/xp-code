@@ -5,6 +5,7 @@ const supabase = require('./supabaseClient'); // Importa o cliente Supabase
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const auth = require('./auth');
+const { v4: uuidv4, validate: validateUuid } = require('uuid'); // Importa funções do pacote uuid
 
 const app = express();
 app.use(cors());
@@ -273,6 +274,72 @@ app.post('/usuario/login', async (req, res) => {
     console.error('Erro ao fazer login:', error.message);
     res.status(500).send('Erro ao fazer login');
   }
+});
+
+// Rota para obter os dados do usuário
+app.get('/usuario/:id', async (req, res) => {
+  const { id } = req.params;
+
+  // Verifica se o ID é um UUID válido
+  if (!validateUuid(id)) {
+      return res.status(400).json({ message: 'ID do usuário inválido' });
+  }
+
+  const { data, error } = await supabase
+      .from('usuario')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+  if (error) {
+      console.error('Erro ao buscar usuário:', error);
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+  }
+  res.json(data);
+});
+
+// Rota para atualizar a conta
+app.put('/usuario/:id', async (req, res) => {
+  const { id } = req.params;
+
+  // Verifica se o ID é um UUID válido
+  if (!validateUuid(id)) {
+      return res.status(400).json({ message: 'ID do usuário inválido' });
+  }
+
+  const { nome, email, telefone, descricao, horario } = req.body;
+
+  const { data, error } = await supabase
+      .from('usuario')
+      .update({ nome, email, telefone, descricao, horario })
+      .eq('id', id);
+
+  if (error) {
+      console.error('Erro ao atualizar conta:', error);
+      return res.status(400).json({ message: 'Erro ao atualizar conta' });
+  }
+  res.json({ message: 'Conta atualizada com sucesso', data });
+});
+
+// Rota para excluir a conta
+app.delete('/usuario/:id', async (req, res) => {
+  const { id } = req.params;
+
+  // Verifica se o ID é um UUID válido
+  if (!validateUuid(id)) {
+      return res.status(400).json({ message: 'ID do usuário inválido' });
+  }
+
+  const { data, error } = await supabase
+      .from('usuario')
+      .delete()
+      .eq('id', id);
+
+  if (error) {
+      console.error('Erro ao excluir conta:', error);
+      return res.status(400).json({ message: 'Erro ao excluir conta' });
+  }
+  res.json({ message: 'Conta excluída com sucesso', data });
 });
 
 // Inicializar o servidor

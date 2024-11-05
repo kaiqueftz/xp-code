@@ -164,5 +164,6 @@ async function deletarProduto(id) {
 }
 
 
+
 // Carrega os produtos ao iniciar a página
 document.addEventListener('DOMContentLoaded', atualizarListaDeProdutos);

@@ -59,6 +59,34 @@ body {
     width: auto; /* Ajusta a largura conforme necessário */
     max-width: 100%; /* Garante que não exceda a largura do pai */
     overflow-wrap: break-word; /* Permite quebra de palavra se necessário */
+    text-decoration: none; /* Remove o sublinhado */
+    color: inherit; /* Mantém a cor do texto original */
+    cursor: pointer; /* Define o cursor para pointer */
+    position: relative; /* Necessário para o tooltip */
+}
+
+#usuarioNome:hover::after {
+    content: "Ir para Meu Perfil"; /* Mensagem do tooltip */
+    position: absolute;
+    top: -30px; /* Posiciona o tooltip acima do nome */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(51, 51, 51, 0.8); /* Fundo mais transparente */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0; /* Inicialmente invisível */
+    transition: opacity 0.5s ease-in-out, top 0.5s ease-in-out; /* Fade-in e fade-out suave */
+    pointer-events: none; /* Evita que o mouse interfira */
+    z-index: 1;
+}
+
+/* Mostra o tooltip com suavidade ao passar o mouse */
+#usuarioNome:hover::after {
+    opacity: 1; /* Visível ao passar o mouse */
+    top: -35px; /* Leve movimento para cima */
 }
 
 .btn-success {
