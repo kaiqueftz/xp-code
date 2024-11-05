@@ -12,7 +12,7 @@
   <title>XepaSocial</title>
 </head>
 
-<body style="min-width: 372px;">
+<body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-success border-bottom shadow-sm mb-1">
     <div class="container-fluid">
       <a class="navbar-brand" href="#"><strong>Xepa Social</strong></a>
@@ -31,23 +31,25 @@
             <a href="#" class="nav-link text-white">Contato</a>
           </li>
         </ul>
-        <div class="align-self-end">
-          <ul class="navbar-nav">
-            <div id="entrarDeslogar" class="d-flex flex-column align-items-center justify-content-center">
-              <div id="usuarioNome" class="alert alert-success d-none" role="alert"></div>
-              <button id="logoutButton" class="btn btn-success btn-sm mt-2 d-none" onclick="logout()">Logout</button>
-            </div>
-            <li class="nav-item" id="cadastroLink">
-              <a href="cadastro.html" class="nav-link text-white">Quero Me Cadastrar</a>
-            </li>
-            <li class="nav-item" id="entrarLink">
-              <a href="entrar.html" class="nav-link text-white">Entrar</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link text-white">
-              </a>
-            </li>
-          </ul>
+        <div id="background">
+          <div class="align-self-end">
+            <ul class="navbar-nav">
+              <div id="entrarDeslogar" class="d-flex flex-column align-items-center justify-content-center">
+                <div id="usuarioNome" class="alert alert-success d-none" role="alert"></div>
+                <button id="logoutButton" class="btn btn-success btn-sm mt-2 d-none" onclick="logout()">Logout</button>
+              </div>
+              <li class="nav-item" id="cadastroLink">
+                <a href="cadastro.html" class="nav-link text-white">Quero Me Cadastrar</a>
+              </li>
+              <li class="nav-item" id="entrarLink">
+                <a href="entrar.html" class="nav-link text-white">Entrar</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link text-white">
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -99,23 +101,23 @@
         <h2 class="text-center mb-4">Adicionar Novo Produto</h2>
         <form id="produtoForm" class="mb-5">
           <div class="mb-3">
-              <label for="nome" class="form-label">Nome do Produto</label>
-              <input type="text" class="form-control" id="nome" required>
+            <label for="nome" class="form-label">Nome do Produto</label>
+            <input type="text" class="form-control" id="nome" required>
           </div>
           <div class="mb-3">
-              <label for="descricao" class="form-label">Descrição do Produto</label>
-              <input type="text" class="form-control" id="descricao" required>
+            <label for="descricao" class="form-label">Descrição do Produto</label>
+            <input type="text" class="form-control" id="descricao" required>
           </div>
           <div class="mb-3">
-              <label for="numero" class="form-label">Número de WhatsApp</label>
-              <input type="text" class="form-control" id="numero" placeholder="Ex: 5561977775555" required>
+            <label for="numero" class="form-label">Número de WhatsApp</label>
+            <input type="text" class="form-control" id="numero" placeholder="Ex: 5561977775555" required>
           </div>
           <div class="mb-3">
-              <label for="preco" class="form-label">Preço (R$)</label>
-              <input type="number" class="form-control" id="preco" placeholder="Ex: 100.00" step="0.01" min="0" required>
+            <label for="preco" class="form-label">Preço (R$)</label>
+            <input type="number" class="form-control" id="preco" placeholder="Ex: 100.00" step="0.01" min="0" required>
           </div>
           <button type="submit" class="btn btn-success">Adicionar Produto</button>
-      </form>
+        </form>
       </div>
 
       <!-- Novo Formulário para Edição -->

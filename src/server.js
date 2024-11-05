@@ -179,7 +179,7 @@ app.put('/produtos/:id', async (req, res) => {
 
 // Rota para cadastrar usuário
 app.post('/usuario', async (req, res) => {
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha, cnpj, descricao, cep, endereco, telefone, horario } = req.body;
 
   try {
     // Verificar se o email já existe
@@ -205,11 +205,11 @@ app.post('/usuario', async (req, res) => {
     // Inserir o usuário no banco de dados com a senha criptografada
     const { data, error } = await supabase
       .from('usuario')
-      .insert([{ nome, email, senha: hashedPassword }])
+      .insert([{ nome, email, senha: hashedPassword, cnpj, descricao, cep, endereco, telefone, horario }])
       .select(); // Adiciona o .select() aqui para retornar os dados inseridos
 
     // Log para verificar a resposta da inserção
-    console.log('Dados enviados para inserção:', { nome, email, senha: hashedPassword });
+    console.log('Dados enviados para inserção:', { nome, email, senha: hashedPassword, cnpj, descricao, cep, endereco, telefone, horario});
     console.log('Dados retornados após inserção:', data);
     console.log('Erro na inserção:', error);
 

@@ -23,15 +23,20 @@ body {
     overflow-x: hidden; /* Isso garante que não haja rolagem lateral */
 }
 
+#background{
+    display: flex;
+    justify-content: center;
+}
+
 #entrarDeslogar {
     display: flex;
-    margin-left: -15%;
     padding: 1rem; /* Aumenta o espaçamento interno para dar mais respiro */
     border-radius: 12px; /* Aumenta o arredondamento das bordas */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Aumenta a sombra para um efeito mais elevado */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0); /* Aumenta a sombra para um efeito mais elevado */
     max-width: 250px; /* Limita a largura do contêiner para uma melhor proporção */
     background-color: rgba(248, 249, 250, 0); /* Aplique uma cor de fundo com leve opacidade */
     transition: box-shadow 0.3s ease, transform 0.3s ease; /* Transições suaves para hover */
+    text-align: center; /* Centraliza o texto */
 }
 
 #entrarDeslogar:hover {
@@ -39,17 +44,21 @@ body {
     transform: translateY(-2px); /* Levanta ligeiramente o contêiner ao passar o mouse */
 }
 
+
 #usuarioNome {
     font-weight: 600; /* Aumenta o peso da fonte para maior ênfase */
-    font-size: 1.1rem; /* Aumenta o tamanho da fonte */
+    font-size: 1.0rem; /* Tamanho da fonte */
     border-radius: 4px;
-    text-align: center;
-    white-space: nowrap; /* Evita quebras de linha */
-    padding: 0.5rem; /* Adiciona um pouco de espaçamento interno */
+    text-align: center; /* Centraliza o texto */
+    padding: 0.8rem; /* Adiciona espaçamento interno */
     color: #155724; /* Cor do texto (verde) */
-    background-color: rgba(92, 184, 92, 0.1); /* Fundo levemente colorido para destacar */
+    background-color: rgba(5, 255, 5, 0.1); /* Fundo levemente colorido para destacar */
     border: 1px solid rgba(92, 184, 92, 0.3); /* Borda sutil para dar definição */
     margin-bottom: 1rem; /* Espaço abaixo do nome do usuário */
+    display: inline-block; /* Permite que o elemento acompanhe o tamanho do conteúdo */
+    width: auto; /* Ajusta a largura conforme necessário */
+    max-width: 100%; /* Garante que não exceda a largura do pai */
+    overflow-wrap: break-word; /* Permite quebra de palavra se necessário */
 }
 
 .btn-success {
