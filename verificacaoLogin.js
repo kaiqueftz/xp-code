@@ -4,25 +4,31 @@ async function login() {
   const senha = document.getElementById('senha').value;
 
   const response = await fetch('/usuario/login', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, senha })
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, senha })
   });
 
   const data = await response.json();
 
   if (response.ok) {
-      localStorage.setItem('nome', data.nome); // Armazena o nome no localStorage
-      localStorage.setItem('usuarioId', data.usuarioId); // Armazena o ID do usuário no localStorage
-      exibirNomeUsuario(data.nome); // Exibe o nome do usuário
-      console.log(`Usuário logado: ${data.nome}`); // Mensagem de login no console
-      // Redirecione ou faça outra ação, se necessário
+    // Armazena o token, nome e ID do usuário no localStorage
+    localStorage.setItem('nome', data.nome); 
+    localStorage.setItem('id', data.id);  // Ajustado para 'idusuario' com base no backend
+    localStorage.setItem('token', data.token); // Armazena o token JWT
+    exibirNomeUsuario(data.nome); // Exibe o nome do usuário na interface
+    console.log(`Usuário logado: ${data.nome}`); // Mensagem de login no console
+    // Exibe a mensagem de usuário logado na interface
+    alert(`Bem-vindo, ${data.nome}! Você está logado.`);
+    // Redirecionar ou realizar outra ação, se necessário
   } else {
-      alert(data.message); // Mostra erro
+    alert(data.message); // Mostra erro, se houver
+    console.log('Erro no login:', data.message);  // Loga a mensagem de erro no console
   }
 }
+
 
 // Função de logout
 function logout() {
@@ -36,7 +42,6 @@ function logout() {
   location.reload(); // Recarrega a página
 }
 
-
 // Função para exibir o nome do usuário
 function exibirNomeUsuario(nome) {
   const usuarioNomeElement = document.getElementById('usuarioNome');
@@ -45,16 +50,16 @@ function exibirNomeUsuario(nome) {
   const logoutButton = document.getElementById('logoutButton');
 
   if (nome && nome.trim() !== '') {
-      usuarioNomeElement.innerText = `Bem-vindo, ${nome}!`;
-      usuarioNomeElement.classList.remove('d-none'); // Remove a classe d-none para exibir
-      cadastroLink.classList.add('d-none'); // Oculta o link de cadastro
-      entrarLink.classList.add('d-none'); // Oculta o link de entrar
-      logoutButton.classList.remove('d-none'); // Mostra o botão de logout
+    usuarioNomeElement.innerText = `Bem-vindo, ${nome}!`;
+    usuarioNomeElement.classList.remove('d-none'); // Remove a classe d-none para exibir
+    cadastroLink.classList.add('d-none'); // Oculta o link de cadastro
+    entrarLink.classList.add('d-none'); // Oculta o link de entrar
+    logoutButton.classList.remove('d-none'); // Mostra o botão de logout
   } else {
-      usuarioNomeElement.classList.add('d-none'); // Adiciona d-none para esconder
-      cadastroLink.classList.remove('d-none'); // Mostra o link de cadastro
-      entrarLink.classList.remove('d-none'); // Mostra o link de entrar
-      logoutButton.classList.add('d-none'); // Oculta o botão de logout
+    usuarioNomeElement.classList.add('d-none'); // Adiciona d-none para esconder
+    cadastroLink.classList.remove('d-none'); // Mostra o link de cadastro
+    entrarLink.classList.remove('d-none'); // Mostra o link de entrar
+    logoutButton.classList.add('d-none'); // Oculta o botão de logout
   }
 }
 
@@ -65,12 +70,11 @@ function exibirBotaoAdicionarProduto() {
   const btnAdicionarProduto = document.getElementById('btnAdicionarProduto');
 
   if (usuarioLogado) {
-      btnAdicionarProduto.classList.remove('d-none'); // Mostra o botão se o usuário estiver logado
+    btnAdicionarProduto.classList.remove('d-none'); // Mostra o botão se o usuário estiver logado
   } else {
-      btnAdicionarProduto.classList.add('d-none'); // Oculta o botão se o usuário não estiver logado
+    btnAdicionarProduto.classList.add('d-none'); // Oculta o botão se o usuário não estiver logado
   }
 }
-
 
 // Ao carregar a página
 window.onload = function() {
@@ -80,12 +84,8 @@ window.onload = function() {
   exibirNomeUsuario(nome);
   exibirBotaoAdicionarProduto();
 
-  // Verificação de login
-  if (nome && nome.trim() !== '' && usuarioId) {
-      console.log('Usuário está logado');
-      buscarDadosUsuario(); // Carrega os dados do usuário
-  } else {
-      console.log('Usuário não está logado');
+  if (nome && nome.trim() !== '') {
+    // Se o usuário estiver logado, exibe a mensagem de logado
+    alert(`Bem-vindo, ${nome}!`);
   }
 };
-

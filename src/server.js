@@ -210,7 +210,7 @@ app.post('/usuario', async (req, res) => {
       .select(); // Adiciona o .select() aqui para retornar os dados inseridos
 
     // Log para verificar a resposta da inserção
-    console.log('Dados enviados para inserção:', { nome, email, senha: hashedPassword, cnpj, descricao, cep, endereco, telefone, horario});
+    console.log('Dados enviados para inserção:', { nome, email, senha: hashedPassword, cnpj, descricao, cep, endereco, telefone, horario });
     console.log('Dados retornados após inserção:', data);
     console.log('Erro na inserção:', error);
 
@@ -242,34 +242,38 @@ app.post('/usuario/login', async (req, res) => {
       .single();
 
     if (error || !data) {
+      console.log('Usuário não encontrado ou erro na consulta');
       return res.status(400).json({ message: 'Usuário não encontrado' });
     }
 
     const usuario = data;
-
     const match = await bcrypt.compare(senha, usuario.senha);
+
     if (!match) {
+      console.log('Senha incorreta');
       return res.status(401).json({ message: 'Senha incorreta' });
     }
 
-    // Armazenar o nome do usuário no localStorage
+    // Gerar o token JWT
     const token = jwt.sign(
       {}, 
-      'sua_chave_secreta_aqui',
+      process.env.JWT_SECRET,  // Usando a chave secreta armazenada
       {
         subject: String(usuario.idcliente),
         expiresIn: '1d'
       }
     );
 
-    // Enviar nome e token como resposta
-    res.status(201).json({ 
+    console.log(`Usuário ${usuario.nome} logado com sucesso! ID: ${usuario.idcliente}`);
+
+    // Enviar a resposta ao frontend com a informação
+    res.status(200).json({ 
       token: token, 
-      idusuario: usuario.idcliente, 
+      id: usuario.id, 
       logado: true,
-      nome: usuario.nome // Enviando o nome do usuário
+      nome: usuario.nome 
     });
-    
+
   } catch (error) {
     console.error('Erro ao fazer login:', error.message);
     res.status(500).send('Erro ao fazer login');
@@ -282,21 +286,22 @@ app.get('/usuario/:id', async (req, res) => {
 
   // Verifica se o ID é um UUID válido
   if (!validateUuid(id)) {
-      return res.status(400).json({ message: 'ID do usuário inválido' });
+    return res.status(400).json({ message: 'ID do usuário inválido' });
   }
 
   const { data, error } = await supabase
-      .from('usuario')
-      .select('*')
-      .eq('id', id)
-      .single();
+    .from('usuario')
+    .select('*')
+    .eq('id', id)
+    .single();
 
   if (error) {
-      console.error('Erro ao buscar usuário:', error);
-      return res.status(404).json({ message: 'Usuário não encontrado' });
+    console.error('Erro ao buscar usuário:', error);
+    return res.status(404).json({ message: 'Usuário não encontrado' });
   }
   res.json(data);
 });
+
 
 // Rota para atualizar a conta
 app.put('/usuario/:id', async (req, res) => {
@@ -304,19 +309,19 @@ app.put('/usuario/:id', async (req, res) => {
 
   // Verifica se o ID é um UUID válido
   if (!validateUuid(id)) {
-      return res.status(400).json({ message: 'ID do usuário inválido' });
+    return res.status(400).json({ message: 'ID do usuário inválido' });
   }
 
   const { nome, email, telefone, descricao, horario } = req.body;
 
   const { data, error } = await supabase
-      .from('usuario')
-      .update({ nome, email, telefone, descricao, horario })
-      .eq('id', id);
+    .from('usuario')
+    .update({ nome, email, telefone, descricao, horario })
+    .eq('id', id);
 
   if (error) {
-      console.error('Erro ao atualizar conta:', error);
-      return res.status(400).json({ message: 'Erro ao atualizar conta' });
+    console.error('Erro ao atualizar conta:', error);
+    return res.status(400).json({ message: 'Erro ao atualizar conta' });
   }
   res.json({ message: 'Conta atualizada com sucesso', data });
 });
@@ -327,17 +332,17 @@ app.delete('/usuario/:id', async (req, res) => {
 
   // Verifica se o ID é um UUID válido
   if (!validateUuid(id)) {
-      return res.status(400).json({ message: 'ID do usuário inválido' });
+    return res.status(400).json({ message: 'ID do usuário inválido' });
   }
 
   const { data, error } = await supabase
-      .from('usuario')
-      .delete()
-      .eq('id', id);
+    .from('usuario')
+    .delete()
+    .eq('id', id);
 
   if (error) {
-      console.error('Erro ao excluir conta:', error);
-      return res.status(400).json({ message: 'Erro ao excluir conta' });
+    console.error('Erro ao excluir conta:', error);
+    return res.status(400).json({ message: 'Erro ao excluir conta' });
   }
   res.json({ message: 'Conta excluída com sucesso', data });
 });
