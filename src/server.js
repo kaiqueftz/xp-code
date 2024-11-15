@@ -284,11 +284,6 @@ app.post('/usuario/login', async (req, res) => {
 app.get('/usuario/:id', async (req, res) => {
   const { id } = req.params;
 
-  // Verifica se o ID é um UUID válido
-  if (!validateUuid(id)) {
-    return res.status(400).json({ message: 'ID do usuário inválido' });
-  }
-
   const { data, error } = await supabase
     .from('usuario')
     .select('*')
@@ -307,11 +302,6 @@ app.get('/usuario/:id', async (req, res) => {
 app.put('/usuario/:id', async (req, res) => {
   const { id } = req.params;
 
-  // Verifica se o ID é um UUID válido
-  if (!validateUuid(id)) {
-    return res.status(400).json({ message: 'ID do usuário inválido' });
-  }
-
   const { nome, email, telefone, descricao, horario } = req.body;
 
   const { data, error } = await supabase
@@ -329,11 +319,6 @@ app.put('/usuario/:id', async (req, res) => {
 // Rota para excluir a conta
 app.delete('/usuario/:id', async (req, res) => {
   const { id } = req.params;
-
-  // Verifica se o ID é um UUID válido
-  if (!validateUuid(id)) {
-    return res.status(400).json({ message: 'ID do usuário inválido' });
-  }
 
   const { data, error } = await supabase
     .from('usuario')
