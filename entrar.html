@@ -41,6 +41,9 @@
             });
 
             const data = await response.json();
+
+            localStorage.setItem('usuario', JSON.stringify(data));
+
             const mensagemDiv = document.getElementById('mensagem');
 
             if (response.ok) {
@@ -49,7 +52,7 @@
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('nome', data.nome); // Armazena o nome do usuário
                 // Redirecionar para a página principal ou dashboard
-                window.location.href = 'index.html'; // Substitua pelo nome da sua página principal
+                // window.location.href = 'index.html'; // Substitua pelo nome da sua página principal
             } else {
                 mensagemDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
             }

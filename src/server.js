@@ -14,28 +14,31 @@ app.use(bodyParser.json());
 // Servir arquivos estáticos da pasta 'public'
 app.use(express.static('public'));
 
-// Rota para listar produtos
-app.get('/produtos', async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from('produtos')
-      .select('*');
+app.get('/produtos/:email', async (req, res) => {
+  const { email } = req.params;
 
-    if (error) {
-      throw error;
-    }
+  if (email == "nada") {
+    const { data, error } = await supabase
+    .from('produtos')
+    .select('*')
 
     res.json(data);
-  } catch (error) {
-    console.error('Erro ao listar produtos:', error.message);
-    res.status(500).send('Erro ao listar produtos');
+
+  } else {
+    const { data, error } = await supabase
+    .from('produtos')
+    .select('*')
+    .eq('emailusuario', email)
+
+    res.json(data);
   }
 });
 
 //checkpoint
 
 // Rota para adicionar produto
-app.post('/produtos', async (req, res) => {
+app.post('/produtos/:email', async (req, res) => {
+  const { email } = req.params;
   const { nome, descricao, numero, preco } = req.body;
 
   // Verificação de número com código do país
@@ -50,7 +53,7 @@ app.post('/produtos', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('produtos')
-      .insert([{ nome, descricao, whatsapp_link: whatsappLink, preco }]) // Inclua o whatsapp_link
+      .insert([{ nome, descricao, whatsapp_link: whatsappLink, preco, emailusuario: email }]) 
       .select();
 
     if (error) {
@@ -115,8 +118,6 @@ app.post('/whatsapp', async (req, res) => {
     const whatsappLink = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
 
     // Log para depuração
-    console.log('Número WhatsApp:', numeroWhatsApp);
-    console.log('Link do WhatsApp:', whatsappLink);
 
     // Redirecionar o usuário para o link do WhatsApp
     res.status(200).json({ message: 'Mensagem enviada com sucesso!', link: whatsappLink });
@@ -127,7 +128,7 @@ app.post('/whatsapp', async (req, res) => {
 });
 
 // Rota para obter um produto pelo ID
-app.get('/produtos/:id', async (req, res) => {
+app.get('/produtos/edit/:id', async (req, res) => {
   const { id } = req.params; // Obtém o ID do produto
 
   try {
@@ -209,11 +210,6 @@ app.post('/usuario', async (req, res) => {
       .insert([{ nome, email, senha: hashedPassword, cnpj, descricao, cep, endereco, telefone, horario }])
       .select(); // Adiciona o .select() aqui para retornar os dados inseridos
 
-    // Log para verificar a resposta da inserção
-    console.log('Dados enviados para inserção:', { nome, email, senha: hashedPassword, cnpj, descricao, cep, endereco, telefone, horario });
-    console.log('Dados retornados após inserção:', data);
-    console.log('Erro na inserção:', error);
-
     if (error) {
       console.error('Erro ao adicionar usuário:', error);
       return res.status(500).json({ message: 'Erro ao adicionar usuário', details: error.message });
@@ -242,7 +238,6 @@ app.post('/usuario/login', async (req, res) => {
       .single();
 
     if (error || !data) {
-      console.log('Usuário não encontrado ou erro na consulta');
       return res.status(400).json({ message: 'Usuário não encontrado' });
     }
 
@@ -250,13 +245,12 @@ app.post('/usuario/login', async (req, res) => {
     const match = await bcrypt.compare(senha, usuario.senha);
 
     if (!match) {
-      console.log('Senha incorreta');
       return res.status(401).json({ message: 'Senha incorreta' });
     }
 
     // Gerar o token JWT
     const token = jwt.sign(
-      {}, 
+      {},
       process.env.JWT_SECRET,  // Usando a chave secreta armazenada
       {
         subject: String(usuario.idcliente),
@@ -264,14 +258,14 @@ app.post('/usuario/login', async (req, res) => {
       }
     );
 
-    console.log(`Usuário ${usuario.nome} logado com sucesso! ID: ${usuario.idcliente}`);
 
     // Enviar a resposta ao frontend com a informação
-    res.status(200).json({ 
-      token: token, 
-      id: usuario.id, 
+    res.status(200).json({
+      token: token,
+      id: usuario.id,
       logado: true,
-      nome: usuario.nome 
+      nome: usuario.nome,
+      email: usuario.email
     });
 
   } catch (error) {
@@ -280,22 +274,56 @@ app.post('/usuario/login', async (req, res) => {
   }
 });
 
-// Rota para obter os dados do usuário
-app.get('/usuario/:id', async (req, res) => {
-  const { id } = req.params;
+app.put('/usuario/:email', async (req, res) => {
+  const { email } = req.params;
+  const { nome, senha, cnpj, descricao, cep, endereco, telefone, horario } = req.body;
 
-  const { data, error } = await supabase
-    .from('usuario')
-    .select('*')
-    .eq('id', id)
-    .single();
+  try {
+    const senhaCriptografada = await bcrypt.hash(senha, 10);
 
-  if (error) {
-    console.error('Erro ao buscar usuário:', error);
-    return res.status(404).json({ message: 'Usuário não encontrado' });
+    const { data, error } = await supabase
+      .from('usuario')
+      .update({
+        nome,
+        senha: senhaCriptografada,
+        cnpj,
+        descricao,
+        cep,
+        endereco,
+        telefone,
+        horario
+      })
+      .eq('email', email);
+
+    if (error) {
+      return res.status(400).json({ mensagem: 'Erro ao atualizar dados.', error: error.message });
+    }
+
+    res.status(200).json({ mensagem: 'Dados atualizados com sucesso.', data });
+  } catch (err) {
+    res.status(500).json({ mensagem: 'Erro interno no servidor.', error: err.message });
   }
-  res.json(data);
 });
+
+app.delete('/usuario/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const { data, error } = await supabase
+      .from('usuario')
+      .delete()
+      .eq('email', email);
+
+    if (error) {
+      return res.status(400).json({ mensagem: 'Erro ao excluir dados.', error: error.message });
+    }
+
+    res.status(200).json({ mensagem: 'Usuário excluído com sucesso.', data });
+  } catch (err) {
+    res.status(500).json({ mensagem: 'Erro interno no servidor.', error: err.message });
+  }
+});
+
 
 
 // Rota para atualizar a conta

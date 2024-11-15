@@ -19,13 +19,11 @@ async function login() {
     localStorage.setItem('id', data.id);  // Ajustado para 'idusuario' com base no backend
     localStorage.setItem('token', data.token); // Armazena o token JWT
     exibirNomeUsuario(data.nome); // Exibe o nome do usuário na interface
-    console.log(`Usuário logado: ${data.nome}`); // Mensagem de login no console
     // Exibe a mensagem de usuário logado na interface
     alert(`Bem-vindo, ${data.nome}! Você está logado.`);
     // Redirecionar ou realizar outra ação, se necessário
   } else {
     alert(data.message); // Mostra erro, se houver
-    console.log('Erro no login:', data.message);  // Loga a mensagem de erro no console
   }
 }
 
@@ -33,11 +31,9 @@ async function login() {
 // Função de logout
 function logout() {
   // Remove o nome e o ID do usuário do localStorage
-  localStorage.removeItem('nome');
-  localStorage.removeItem('usuarioId'); // Limpa o ID do usuário
+  localStorage.clear();
   // Atualiza a interface para esconder o nome do usuário
   exibirNomeUsuario(''); // Passa uma string vazia para esconder
-  console.log('Usuário deslogado'); // Mensagem de logout no console
   alert('Você foi desconectado com sucesso!');
   location.reload(); // Recarrega a página
 }
@@ -86,6 +82,6 @@ window.onload = function() {
 
   if (nome && nome.trim() !== '') {
     // Se o usuário estiver logado, exibe a mensagem de logado
-    alert(`Bem-vindo, ${nome}!`);
+
   }
 };

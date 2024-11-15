@@ -4,6 +4,10 @@ document.getElementById('produtoEditForm').addEventListener('submit', editarProd
 
 // Função para adicionar produto (POST)
 async function adicionarProduto(event) {
+    const usuario = localStorage.getItem('usuario');
+    const usuarioObj = JSON.parse(usuario);
+    const email = usuarioObj.email;
+    
     event.preventDefault();
     const nome = document.getElementById('nome').value;
     const descricao = document.getElementById('descricao').value;
@@ -20,7 +24,7 @@ async function adicionarProduto(event) {
     const whatsappLink = `https://api.whatsapp.com/send?phone=${numero}`;
 
     try {
-        const response = await fetch('http://localhost:3000/produtos', {
+        const response = await fetch(`http://localhost:3000/produtos/${email}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,8 +47,18 @@ async function adicionarProduto(event) {
 //checkpointdf
 // Função para atualizar a lista de produtos (GET)
 async function atualizarListaDeProdutos() {
+    const usuario = localStorage.getItem('usuario');
+    const usuarioObj = usuario ? JSON.parse(usuario) : null;
+    const email = usuarioObj?.email ?? "nada";
+    
     try {
-        const response = await fetch('http://localhost:3000/produtos');
+        const response = await fetch(`http://localhost:3000/produtos/${email}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
         const produtos = await response.json();
 
         // Limpar os produtos existentes
@@ -82,10 +96,9 @@ async function atualizarListaDeProdutos() {
     }
 }
 
-
 // Função para carregar os dados do produto no formulário de edição
 function carregarProdutoParaEdicao(id) {
-    fetch(`http://localhost:3000/produtos/${id}`)
+    fetch(`http://localhost:3000/produtos/edit/${id}`)
         .then(response => response.json())
         .then(produto => {
             document.getElementById('editNome').value = produto.nome;
@@ -142,9 +155,9 @@ async function editarProduto(event) {
 }
 
 // Função para deletar produto (DELETE)
-async function deletarProduto(id) {
+async function deletarProduto(email) {
     try {
-        const response = await fetch(`http://localhost:3000/produtos/${id}`, {
+        const response = await fetch(`http://localhost:3000/produtos/${email}`, {
             method: 'DELETE',
         });
 

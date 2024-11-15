@@ -37,9 +37,10 @@ async function buscarCEP() {
         const endereco = document.getElementById('endereco').value;
         const horario = document.getElementById('horario').value;
 
-        // Armazenar os dados no localStorage
-        const userData = { nome, email, cnpj, descricao, cep, telefone, endereco, horario };
-        localStorage.setItem('usuario', JSON.stringify(userData));
+        // apagar depois
+        // // Armazenar os dados no localStorage
+        // const userData = { nome, email, cnpj, descricao, cep, telefone, endereco, horario };
+        // localStorage.setItem('usuario', JSON.stringify(userData));
 
         try {
             const response = await fetch('http://localhost:3000/usuario', {
