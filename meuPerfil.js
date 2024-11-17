@@ -31,6 +31,12 @@ function atualizarConta() {
   const telefone = document.getElementById('telefone').value.trim();
   const horario = document.getElementById('horario').value.trim();
 
+   // Verificação se todos os campos obrigatórios estão preenchidos
+   if (!nome || !email || !senha || !cnpj || !cep || !telefone) {
+    alert('Por favor, preencha todos os campos obrigatórios!');
+    return;
+  }
+
   const updatedUserData = { nome, email, senha, cnpj, descricao, cep, endereco, telefone, horario };
 
   localStorage.setItem('usuario', JSON.stringify(updatedUserData));
@@ -167,6 +173,14 @@ function excluirConta() {
         mensagemDiv.innerHTML = `<div class="alert alert-danger">Erro ao excluir conta. Tente novamente mais tarde.</div>`;
       });
   }
+
+    // Limpar o localStorage
+    localStorage.clear();
+
+    // Após a confirmação de exclusão bem-sucedida, aguarde 4 segundos e redirecione
+    setTimeout(() => {
+        window.location.href = "entrar.html";
+    }, 500); 
 }
 
 async function buscarCEP() {

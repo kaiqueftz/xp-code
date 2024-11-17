@@ -39,7 +39,7 @@ app.get('/produtos/:email', async (req, res) => {
 // Rota para adicionar produto
 app.post('/produtos/:email', async (req, res) => {
   const { email } = req.params;
-  const { nome, descricao, numero, preco } = req.body;
+  const { nome, descricao, numero, preco, estabelecimento, dataHora } = req.body;
 
   // Verificação de número com código do país
   const numeroValido = /^\d{12,15}$/.test(numero);
@@ -53,7 +53,7 @@ app.post('/produtos/:email', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('produtos')
-      .insert([{ nome, descricao, whatsapp_link: whatsappLink, preco, emailusuario: email }]) 
+      .insert([{ nome, descricao, whatsapp_link: whatsappLink, preco, emailusuario: email, estabelecimento, dataHora }]) 
       .select();
 
     if (error) {
@@ -157,12 +157,12 @@ app.get('/produtos/edit/:id', async (req, res) => {
 // Rota para editar produto
 app.put('/produtos/:id', async (req, res) => {
   const { id } = req.params;
-  const { nome, descricao, numero, preco } = req.body;
+  const { nome, descricao, numero, preco, estabelecimento } = req.body;
 
   try {
     const { data, error } = await supabase
       .from('produtos')
-      .update({ nome, descricao, numero, preco })
+      .update({ nome, descricao, numero, preco, estabelecimento })
       .eq('id', id)
       .select();
 
@@ -261,12 +261,20 @@ app.post('/usuario/login', async (req, res) => {
 
     // Enviar a resposta ao frontend com a informação
     res.status(200).json({
-      token: token,
-      id: usuario.id,
-      logado: true,
-      nome: usuario.nome,
-      email: usuario.email
+      token: token,                  // O token JWT gerado para o usuário
+      id: usuario.id,                // ID do usuário no banco de dados
+      logado: true,                  // Indica que o usuário está logado
+      nome: usuario.nome,            // Nome do usuário
+      email: usuario.email,          // Email do usuário
+      cnpj: usuario.cnpj,            // CNPJ do usuário
+      descricao: usuario.descricao,  // Descrição da loja
+      cep: usuario.cep,              // CEP da loja
+      endereco: usuario.endereco,    // Endereço da loja
+      telefone: usuario.telefone,    // Telefone de contato
+      horario: usuario.horario,      // Horário de funcionamento
+      message: 'Login realizado com sucesso!' // Mensagem de sucesso
     });
+
 
   } catch (error) {
     console.error('Erro ao fazer login:', error.message);

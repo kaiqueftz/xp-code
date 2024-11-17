@@ -13,6 +13,8 @@ async function adicionarProduto(event) {
     const descricao = document.getElementById('descricao').value;
     const numero = document.getElementById('numero').value;
     const preco = document.getElementById('preco').value;
+    const estabelecimento = document.getElementById('estabelecimento').value;
+    const dataHora = document.getElementById('dataHora').value;
 
     // Verificação de número
     const numeroValido = /^\d{10,15}$/.test(numero); 
@@ -29,7 +31,7 @@ async function adicionarProduto(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, descricao, numero, whatsapp_link: whatsappLink, preco }),
+            body: JSON.stringify({ nome, descricao, numero, whatsapp_link: whatsappLink, preco, estabelecimento, dataHora }),
         });
 
         if (response.ok) {
@@ -77,9 +79,16 @@ async function atualizarListaDeProdutos() {
                 <div class="card">
                     <img src="img/produtos/images.png" class="card-img-top" alt="${produto.nome}">
                     <div class="card-body d-flex flex-column justify-content-between">
+                        <p class="card-text"><i class="bi bi-person me-2"></i>${produto.estabelecimento}</p>
                         <h5 class="card-title">${produto.nome}</h5>
                         <p class="card-text">${produto.descricao}</p>
                         <h5 id="precoProduto" class="card-title"> R$ ${produto.preco}</h5>
+                        <div class="d-flex align-items-center mb-4">
+                        <i class="bi bi-calendar-event me-2"></i>
+                        <span class="card-text">${new Date(produto.dataHora).toLocaleString('pt-BR', { 
+                        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
+                        })}</span>
+                        </div>
                         <a href="${produto.whatsapp_link}" target="_blank" class="btn btn-primary w-75 align-self-center mb-2">WhatsApp</a>
                         ${usuarioLogado ? `
                             <button id="btnEditar" class="btn btn-warning w-75 align-self-center mb-2" onclick="carregarProdutoParaEdicao(${produto.id})">Editar</button>
@@ -105,6 +114,7 @@ function carregarProdutoParaEdicao(id) {
             document.getElementById('editDescricao').value = produto.descricao;
             document.getElementById('editNumero').value = produto.numero;
             document.getElementById('editPreco').value = produto.preco;
+            document.getElementById('editEstabelecimento').value = produto.estabelecimento;
 
             // Mostra o formulário de edição e oculta o formulário de adição
             document.getElementById('produtoEditForm').style.display = 'block';
@@ -129,6 +139,7 @@ async function editarProduto(event) {
     const descricao = document.getElementById('editDescricao').value;
     const numero = document.getElementById('editNumero').value;
     const preco = document.getElementById('editPreco').value;
+    const estabelecimento = document.getElementById('editEstabelecimento').value;
 
     try {
         const response = await fetch(`http://localhost:3000/produtos/${id}`, {
@@ -136,7 +147,7 @@ async function editarProduto(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, descricao, numero, preco }),
+            body: JSON.stringify({ nome, descricao, numero, preco, estabelecimento }),
         });
 
         if (response.ok) {
