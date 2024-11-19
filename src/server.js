@@ -368,6 +368,62 @@ app.delete('/usuario/:id', async (req, res) => {
   res.json({ message: 'Conta excluída com sucesso', data });
 });
 
+// Rota POST para enviar o perfil do usuário com base no email, excluindo as colunas especificadas
+app.post('/perfil/:email', async (req, res) => {
+  const { email } = req.params; // Captura o email da URL
+
+  if (!email) {
+    return res.status(400).json({ message: 'O email é obrigatório.' });
+  }
+
+  try {
+    // Consulta a tabela 'usuario' no Supabase para buscar os dados do usuário com base no email
+    const { data, error } = await supabase
+      .from('usuario')
+      .select('nome, email, descricao, cep, endereco, telefone, horario') // Apenas as colunas desejadas
+      .eq('email', email)
+      .single(); // Garante que apenas um registro é retornado
+
+    if (error || !data) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    // Retorna os dados do usuário
+    res.status(200).json({ user: data });
+  } catch (err) {
+    console.error('Erro ao buscar o perfil:', err.message);
+    res.status(500).json({ message: 'Erro interno no servidor.', error: err.message });
+  }
+});
+
+// Rota GET para buscar o perfil do usuário com base no email, excluindo as colunas especificadas
+app.get('/perfil/:email', async (req, res) => {
+  const { email } = req.params; // Captura o email da URL
+
+  if (!email) {
+    return res.status(400).json({ message: 'O email é obrigatório.' });
+  }
+
+  try {
+    // Consulta a tabela 'usuario' no Supabase para buscar os dados do usuário com base no email
+    const { data, error } = await supabase
+      .from('usuario')
+      .select('nome, email, descricao, cep, endereco, telefone, horario') // Apenas as colunas desejadas
+      .eq('email', email)
+      .single(); // Garante que apenas um registro é retornado
+
+    if (error || !data) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    // Retorna os dados do usuário
+    res.status(200).json({ user: data });
+  } catch (err) {
+    console.error('Erro ao buscar o perfil:', err.message);
+    res.status(500).json({ message: 'Erro interno no servidor.', error: err.message });
+  }
+});
+
 // Inicializar o servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

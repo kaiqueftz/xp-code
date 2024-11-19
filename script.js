@@ -16,12 +16,12 @@ async function adicionarProduto(event) {
     const estabelecimento = document.getElementById('estabelecimento').value;
     const dataHora = document.getElementById('dataHora').value;
 
-    // Verificação de número
-    const numeroValido = /^\d{10,15}$/.test(numero); 
-    if (!numeroValido) {
-        alert("Número inválido!");
-        return;
-    }
+    // Verificação de número com exatamente 13 dígitos
+        const numeroValido = /^\d{13}$/.test(numero); 
+        if (!numeroValido) {
+            alert("Número inválido! O número deve conter o +55 (ex: 5561911112222).");
+            return;
+        }
 
     const whatsappLink = `https://api.whatsapp.com/send?phone=${numero}`;
 
@@ -79,7 +79,10 @@ async function atualizarListaDeProdutos() {
                 <div class="card">
                     <img src="img/produtos/images.png" class="card-img-top" alt="${produto.nome}">
                     <div class="card-body d-flex flex-column justify-content-between">
-                        <p class="card-text"><i class="bi bi-person me-2"></i>${produto.estabelecimento}</p>
+                        <a href="perfil.html?email=${produto.emailusuario}" class="text-decoration text-muted">
+                        <p class="card-text">
+                            <i class="bi bi-person me-2"></i>${produto.estabelecimento}
+                        </p></a>
                         <h5 class="card-title">${produto.nome}</h5>
                         <p class="card-text">${produto.descricao}</p>
                         <h5 id="precoProduto" class="card-title"> R$ ${produto.preco}</h5>
@@ -140,6 +143,12 @@ async function editarProduto(event) {
     const numero = document.getElementById('editNumero').value;
     const preco = document.getElementById('editPreco').value;
     const estabelecimento = document.getElementById('editEstabelecimento').value;
+
+    const numeroValido = /^\d{13}$/.test(numero); 
+    if (!numeroValido) {
+        alert("Número inválido! O número deve conter o +55 (ex: 5561911112222).");
+        return;
+    }
 
     try {
         const response = await fetch(`http://localhost:3000/produtos/${id}`, {
