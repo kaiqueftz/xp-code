@@ -27,7 +27,6 @@
 
 #precoProduto{
     display: flex;
-    align-self: center;
     margin-bottom: 10%;
     font-size: 1.5rem;
 }

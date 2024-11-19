@@ -63,6 +63,9 @@ async function atualizarListaDeProdutos() {
 
         const produtos = await response.json();
 
+         // Ordena os produtos pela dataHora em ordem decrescente (do mais recente para o mais antigo)
+        produtos.sort((a, b) => new Date(b.dataHora) - new Date(a.dataHora));
+
         // Limpar os produtos existentes
         const produtosContainer = document.getElementById('produtosContainer');
         produtosContainer.innerHTML = '';
@@ -82,7 +85,7 @@ async function atualizarListaDeProdutos() {
                         <a href="perfil.html?email=${produto.emailusuario}" class="text-decoration text-muted">
                         <p class="card-text">
                             <i class="bi bi-person me-2"></i>${produto.estabelecimento}
-                        </p></a>
+                        </p></a><br>
                         <h5 class="card-title">${produto.nome}</h5>
                         <p class="card-text">${produto.descricao}</p>
                         <h5 id="precoProduto" class="card-title"> R$ ${produto.preco}</h5>
@@ -92,10 +95,10 @@ async function atualizarListaDeProdutos() {
                         day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
                         })}</span>
                         </div>
-                        <a href="${produto.whatsapp_link}" target="_blank" class="btn btn-primary w-75 align-self-center mb-2">WhatsApp</a>
+                        <a href="${produto.whatsapp_link}" target="_blank" class="btn btn-primary w-75 align-self-center mb-2"> <i class="bi bi-whatsapp me-2"></i>WhatsApp</a>
                         ${usuarioLogado ? `
-                            <button id="btnEditar" class="btn btn-warning w-75 align-self-center mb-2" onclick="carregarProdutoParaEdicao(${produto.id})">Editar</button>
-                            <button id="btnDeletar" class="btn btn-danger w-75 align-self-center" onclick="deletarProduto(${produto.id})">Excluir</button>
+                            <button id="btnEditar" class="btn btn-warning w-75 align-self-center mb-2" onclick="carregarProdutoParaEdicao(${produto.id})"><i class="bi bi-pencil me-2"></i>Editar</button>
+                            <button id="btnDeletar" class="btn btn-danger w-75 align-self-center" onclick="deletarProduto(${produto.id})"><i class="bi bi-trash me-2"></i>Vendido</button>
                         ` : ''}
                     </div>
                 </div>
