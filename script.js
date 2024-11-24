@@ -35,7 +35,7 @@ async function adicionarProduto(event) {
         });
 
         if (response.ok) {
-            alert('Produto adicionado com sucesso!');
+            alert('Produto adicionado com sucesso! Não se esqueça de adicionar imagem.');
             document.getElementById('produtoForm').reset();
             await atualizarListaDeProdutos();
         } else {
@@ -80,7 +80,7 @@ async function atualizarListaDeProdutos() {
             produtoDiv.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
             produtoDiv.innerHTML = `
                 <div class="card">
-                    <img src="img/produtos/images.png" class="card-img-top" alt="${produto.nome}">
+                     <img src="${produto.imagem_url}" class="card-img-top" alt="Prezado Estabelecimento, por favor adicione a imagem do produto no botão abaixo! "">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <a href="perfil.html?email=${produto.emailusuario}" class="text-decoration text-muted">
                         <p class="card-text">
@@ -97,6 +97,9 @@ async function atualizarListaDeProdutos() {
                         </div>
                         <a href="${produto.whatsapp_link}" target="_blank" class="btn btn-primary w-75 align-self-center mb-2"> <i class="bi bi-whatsapp me-2"></i>WhatsApp</a>
                         ${usuarioLogado ? `
+                            <button id="btnAdicionarImagem" class="btn btn-secondary w-75 align-self-center mb-2" onclick="abrirModalUpload(${produto.id})">
+                            <i class="bi bi-image me-2"></i>Adicionar Imagem
+                            </button>
                             <button id="btnEditar" class="btn btn-warning w-75 align-self-center mb-2" onclick="carregarProdutoParaEdicao(${produto.id})"><i class="bi bi-pencil me-2"></i>Editar</button>
                             <button id="btnDeletar" class="btn btn-danger w-75 align-self-center" onclick="deletarProduto(${produto.id})"><i class="bi bi-trash me-2"></i>Vendido</button>
                         ` : ''}
@@ -110,6 +113,13 @@ async function atualizarListaDeProdutos() {
         console.error('Erro ao buscar produtos:', error);
     }
 }
+
+function abrirModalUpload(produtoId) {
+    // Aqui você pode abrir um modal ou redirecionar para a página de upload
+    // Exemplo de redirecionamento:
+    window.location.href = `upload.html?produtoId=${produtoId}`;
+}
+
 
 // Função para carregar os dados do produto no formulário de edição
 function carregarProdutoParaEdicao(id) {
