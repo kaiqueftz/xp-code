@@ -19,7 +19,6 @@ window.onload = function() {
   preencherFormulario();
 };
 
-// Função para atualizar a conta com os dados do formulário
 function atualizarConta() {
   const nome = document.getElementById('nome').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -33,7 +32,7 @@ function atualizarConta() {
 
    // Verificação se todos os campos obrigatórios estão preenchidos
    if (!nome || !email || !senha || !cnpj || !cep || !telefone) {
-    alert('Por favor, preencha todos os campos obrigatórios!');
+    showAlert('error', 'Por favor, preencha todos os campos obrigatórios!');
     return;
   }
 
@@ -55,89 +54,10 @@ function atualizarConta() {
       return response.json();
     })
     .then((data) => {
-    
-      // Criar alerta dinamicamente
-      const alertDiv = document.createElement('div');
-      alertDiv.className = 'alert alert-success alert-dismissible fade show';
-      alertDiv.role = 'alert';
-      alertDiv.innerHTML = `
-        <strong>Sucesso!</strong> Dados atualizados com sucesso.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      `;
-    
-      // Inserir o alerta no topo do site
-      document.body.prepend(alertDiv);
-    
-      // Opcional: Remover o alerta automaticamente após alguns segundos
-      setTimeout(() => {
-        alertDiv.remove();
-      }, 5000);
+      showAlert('success', 'Dados atualizados com sucesso.');
     })
     .catch((error) => {
-
-      // Criar alerta de erro dinamicamente
-      const alertDiv = document.createElement('div');
-      alertDiv.className = 'alert alert-danger alert-dismissible fade show';
-      alertDiv.role = 'alert';
-      alertDiv.innerHTML = `
-        <strong>Erro!</strong> Não foi possível atualizar os dados.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      `;
-    
-      // Inserir o alerta no topo do site
-      document.body.prepend(alertDiv);
-    
-      // Opcional: Remover o alerta automaticamente após alguns segundos
-      setTimeout(() => {
-        alertDiv.remove();
-      }, 5000);
-    })
-    .catch((error) => {
-    
-      // Criar alerta dinamicamente
-      const alertDiv = document.createElement('div');
-      alertDiv.className = 'alert alert-success alert-dismissible fade show';
-      alertDiv.role = 'alert';
-      alertDiv.innerHTML = `
-        <strong>Sucesso!</strong> Dados atualizados com sucesso.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      `;
-    
-      // Inserir o alerta no topo do site
-      document.body.prepend(alertDiv);
-    
-      // Opcional: Remover o alerta automaticamente após alguns segundos
-      setTimeout(() => {
-        alertDiv.remove();
-      }, 5000);
-    })
-    .catch((error) => {
-      console.error('Erro ao atualizar dados:', error);
-    
-      // Criar alerta de erro dinamicamente
-      const alertDiv = document.createElement('div');
-      alertDiv.className = 'alert alert-danger alert-dismissible fade show';
-      alertDiv.role = 'alert';
-      alertDiv.innerHTML = `
-        <strong>Erro!</strong> Não foi possível atualizar os dados.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      `;
-    
-      // Inserir o alerta no topo do site
-      document.body.prepend(alertDiv);
-    
-      // Opcional: Remover o alerta automaticamente após alguns segundos
-      setTimeout(() => {
-        alertDiv.remove();
-      }, 5000);
+      showAlert('error', 'Não foi possível atualizar os dados.');
       console.error('Erro ao atualizar conta:', error.message);
     });
 }
@@ -159,28 +79,23 @@ function excluirConta() {
         return response.json();
       })
       .then(data => {
-
         localStorage.removeItem('usuario');
-
         document.getElementById('perfilForm').reset();
-
-        const mensagemDiv = document.getElementById('mensagem');
-        mensagemDiv.innerHTML = `<div class="alert alert-danger">Conta excluída com sucesso!</div>`;
+        showAlert('error', 'Conta excluída com sucesso!');
       })
       .catch(error => {
         console.error('Erro:', error);
-        const mensagemDiv = document.getElementById('mensagem');
-        mensagemDiv.innerHTML = `<div class="alert alert-danger">Erro ao excluir conta. Tente novamente mais tarde.</div>`;
+        showAlert('error', 'Erro ao excluir conta. Tente novamente mais tarde.');
       });
   }
 
-    // Limpar o localStorage
-    localStorage.clear();
+  // Limpar o localStorage
+  localStorage.clear();
 
-    // Após a confirmação de exclusão bem-sucedida, aguarde 4 segundos e redirecione
-    setTimeout(() => {
-        window.location.href = "entrar.html";
-    }, 500); 
+  // Após a confirmação de exclusão bem-sucedida, aguarde 4 segundos e redirecione
+  setTimeout(() => {
+      window.location.href = "entrar.html";
+  }, 500); 
 }
 
 async function buscarCEP() {
@@ -188,7 +103,7 @@ async function buscarCEP() {
   cep = cep.replace(/\D/g, ''); // Remove caracteres não numéricos
 
   if (cep.length !== 8) {
-      alert("Por favor, insira um CEP válido com 8 dígitos.");
+      showAlert('error', "Por favor, insira um CEP válido com 8 dígitos.");
       return;
   }
 
@@ -197,14 +112,37 @@ async function buscarCEP() {
       const data = await response.json();
       
       if (data.erro) {
-          alert("CEP não encontrado.");
+          showAlert('error', "CEP não encontrado.");
       } else {
           const endereco = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
           document.getElementById("endereco").value = endereco;
-          alert("Endereço preenchido automaticamente!");
+          showAlert('success', "Endereço preenchido automaticamente!");
       }
   } catch (error) {
       console.error("Erro ao buscar o CEP:", error);
-      alert("Erro ao buscar o CEP. Verifique a conexão e tente novamente.");
+      showAlert('error', "Erro ao buscar o CEP. Verifique a conexão e tente novamente.");
   }
+}
+
+function showAlert(type, message) {
+  const modalTitle = document.getElementById('genericModalLabel');
+  const modalMessage = document.getElementById('modalMessage');
+  const modalButton = document.getElementById('modalButton');
+
+  // Define o título e a mensagem do modal
+  if (type === 'success') {
+      modalTitle.textContent = 'Sucesso!';
+      modalMessage.textContent = message;
+      modalButton.classList.add('btn-success');
+      modalButton.classList.remove('btn-danger');
+  } else if (type === 'error') {
+      modalTitle.textContent = 'Erro!';
+      modalMessage.textContent = message;
+      modalButton.classList.add('btn-danger');
+      modalButton.classList.remove('btn-success');
+  }
+
+  // Exibe o modal
+  const genericModal = new bootstrap.Modal(document.getElementById('genericModal'));
+  genericModal.show();
 }

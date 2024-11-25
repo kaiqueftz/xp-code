@@ -2,6 +2,7 @@
 document.getElementById('produtoForm').addEventListener('submit', adicionarProduto);
 document.getElementById('produtoEditForm').addEventListener('submit', editarProduto);
 
+
 // Função para adicionar produto (POST)
 async function adicionarProduto(event) {
     const usuario = localStorage.getItem('usuario');
@@ -17,9 +18,9 @@ async function adicionarProduto(event) {
     const dataHora = document.getElementById('dataHora').value;
 
     // Verificação de número com exatamente 13 dígitos
-        const numeroValido = /^\d{13}$/.test(numero); 
+        const numeroValido =/^\d{10,11}$/.test(numero);  
         if (!numeroValido) {
-            alert("Número inválido! O número deve conter o +55 (ex: 5561911112222).");
+            alert('Número inválido! O número deve ter 10 ou 11 dígitos (ex: 6133445555 para telefone ou 619911112222 para celular');
             return;
         }
 
@@ -35,7 +36,7 @@ async function adicionarProduto(event) {
         });
 
         if (response.ok) {
-            alert('Produto adicionado com sucesso! Não se esqueça de adicionar imagem.');
+            showAlert('success', 'Produto atualizado com sucesso! <span style="color: red;">Não se esqueça de adicionar a foto</span>');
             document.getElementById('produtoForm').reset();
             await atualizarListaDeProdutos();
         } else {
@@ -44,9 +45,9 @@ async function adicionarProduto(event) {
     } catch (error) {
         console.error('Erro:', error);
         alert('Erro ao se conectar ao servidor.');
-    }
+    }      
 }
-//checkpointdf
+
 // Função para atualizar a lista de produtos (GET)
 async function atualizarListaDeProdutos() {
     const usuario = localStorage.getItem('usuario');
@@ -80,7 +81,7 @@ async function atualizarListaDeProdutos() {
             produtoDiv.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
             produtoDiv.innerHTML = `
                 <div class="card">
-                     <img src="${produto.imagem_url}" class="card-img-top" alt="Prezado Estabelecimento, por favor adicione a imagem do produto no botão abaixo! "">
+                     <img src="${produto.imagem_url}" class="card-img-top" alt="Prezado Estabelecimento, por favor adicione a imagem do produto clicando no botão abaixo!">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <a href="perfil.html?email=${produto.emailusuario}" class="text-decoration text-muted">
                         <p class="card-text">
@@ -157,11 +158,11 @@ async function editarProduto(event) {
     const preco = document.getElementById('editPreco').value;
     const estabelecimento = document.getElementById('editEstabelecimento').value;
 
-    const numeroValido = /^\d{13}$/.test(numero); 
-    if (!numeroValido) {
-        alert("Número inválido! O número deve conter o +55 (ex: 5561911112222).");
-        return;
-    }
+    const numeroValido =/^\d{10,11}$/.test(numero);  
+        if (!numeroValido) {
+            alert('Número inválido! O número deve ter 10 ou 11 dígitos (ex: 6133445555 para telefone ou 619911112222 para celular');
+            return;
+        }
 
     try {
         const response = await fetch(`http://localhost:3000/produtos/${id}`, {
@@ -173,7 +174,7 @@ async function editarProduto(event) {
         });
 
         if (response.ok) {
-            alert('Produto atualizado com sucesso!');
+            showAlert('success', 'Produto atualizado com sucesso!');
             document.getElementById('produtoEditForm').reset();
             document.getElementById('produtoEditForm').style.display = 'none';
             document.getElementById('produtoForm').style.display = 'block'; // Volta ao formulário de adição
@@ -195,7 +196,7 @@ async function deletarProduto(email) {
         });
 
         if (response.ok) {
-            alert('Produto removido com sucesso!');
+            showAlert('success', 'Produto removido com sucesso!');
             await atualizarListaDeProdutos();
         } else {
             // Captura a mensagem de erro retornada pelo servidor
@@ -209,7 +210,30 @@ async function deletarProduto(email) {
     }
 }
 
+function showAlert(type, message) {
+    const modalTitle = document.getElementById('genericModalLabel');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalButton = document.getElementById('modalButton');
 
+    // Define o título e a mensagem do modal
+    if (type === 'success') {
+        modalTitle.textContent = 'Sucesso!';
+        modalMessage.textContent = message;
+        modalButton.classList.add('btn-success');
+        modalButton.classList.remove('btn-danger');
+    } else if (type === 'error') {
+        modalTitle.textContent = 'Erro!';
+        modalMessage.textContent = message;
+        modalButton.classList.add('btn-danger');
+        modalButton.classList.remove('btn-success');
+    }
+
+    modalMessage.innerHTML = message;
+
+    // Exibe o modal
+    const genericModal = new bootstrap.Modal(document.getElementById('genericModal'));
+    genericModal.show();
+}
 
 // Carrega os produtos ao iniciar a página
 document.addEventListener('DOMContentLoaded', atualizarListaDeProdutos);

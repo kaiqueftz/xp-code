@@ -31,13 +31,13 @@
         </ul>
         <div id="background">
           <div class="align-self-end">
-              <ul class="navbar-nav">
-                  <div id="entrarDeslogar" class="d-flex flex-column align-items-center justify-content-center">
-                      <!-- Substitua o div por um a com o href desejado -->
-                      <a id="usuarioNome" class="alert alert-success d-none" role="alert" href="meuPerfil.html">
-                      </a>
-                      <button id="logoutButton" class="btn btn-success btn-sm mt-2 d-none" onclick="logout()">Logout</button>
-                  </div>
+            <ul class="navbar-nav">
+              <div id="entrarDeslogar" class="d-flex flex-column align-items-center justify-content-center">
+                <!-- Substitua o div por um a com o href desejado -->
+                <a id="usuarioNome" class="alert alert-success d-none" role="alert" href="meuPerfil.html">
+                </a>
+                <button id="logoutButton" class="btn btn-success btn-sm mt-2 d-none" onclick="logout()">Logout</button>
+              </div>
               <li class="nav-item" id="cadastroLink">
                 <a href="cadastro.html" class="nav-link text-white">Quero Me Cadastrar</a>
               </li>
@@ -126,10 +126,10 @@
         <form id="produtoEditForm" class="mb-5" style="display: none;">
           <div class="mb-3">
             <label for="estabelecimento" class="form-label">
-                <i class="bi bi-person me-2"></i>Estabelecimento
+              <i class="bi bi-person me-2"></i>Estabelecimento
             </label>
             <input type="text" class="form-control" id="editEstabelecimento" required>
-        </div>
+          </div>
           <div class="mb-3">
             <label for="editNome" class="form-label">Nome do Produto</label>
             <input type="text" class="form-control" id="editNome" required>
@@ -144,13 +144,31 @@
           </div>
           <div class="mb-3">
             <label for="editNumero" class="form-label">Número de WhatsApp</label>
-            <input type="text" class="form-control" id="editNumero" placeholder="Ex: 5561977775555" required>
+            <input type="text" class="form-control" id="editNumero" placeholder="Ex: 61977775555" required>
           </div>
           <button type="submit" class="btn btn-warning">Atualizar Produto</button>
         </form>
       </div>
     </div>
   </main>
+
+  <!-- Modal de Alerta Genérico -->
+  <div class="modal fade" id="genericModal" tabindex="-1" aria-labelledby="genericModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="genericModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalMessage">
+          <!-- Mensagem do alerta será inserida aqui -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="modalButton" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="border-top text-muted bg-light">
     <div class="container">

@@ -72,6 +72,23 @@ async function buscarCEP() {
         }
     });
 
+    // Máscara e validação do telefone
+document.getElementById('telefone').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+});
+
+// Salva telefone no localStorage após cadastro bem-sucedido
+document.getElementById('cadastroForm').addEventListener('submit', async function (e) {
+    // Outros códigos...
+    
+    const telefone = document.getElementById('telefone').value;
+    
+    // Salva o telefone em localStorage
+    localStorage.setItem('telefone', telefone);
+    
+    // Restante do código de envio...
+});
+
 // Função para aplicar a máscara de CNPJ
 function aplicarMascaraCNPJ(cnpj) {
     return cnpj.replace(/\D/g, '')  // Remove todos os caracteres não numéricos
