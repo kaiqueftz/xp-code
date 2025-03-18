@@ -6,33 +6,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil</title>
 
-    <!-- Incluindo o CSS do Bootstrap -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" href="img/favicon/favicon.ico">
 
-    <!-- Scripts para JWT e Supabase -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
-
-    <!-- Incluindo o JavaScript do Bootstrap (sem duplicações) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
-
-    <!-- Incluindo o seu script JS -->
     <script src="meuPerfil.js" defer></script>
+
+    <style>
+        .profile-container {
+            display: flex;
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .left-side {
+            width: 40%;
+            background: green;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .left-side img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .right-side {
+            width: 60%;
+            padding: 20px;
+        }
+
+        .btn-login {
+            margin-top: 15px;
+            background: white;
+            color: green;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-login:hover {
+            background: #fff;
+            color: darkgreen;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <button class="btn btn-outline-success position-absolute top-0 start-0 m-3" onclick="history.back()">
-            <i class="bi bi-arrow-left"></i> Voltar
+    <div class="mt-3 ml-5">
+        <button onclick="window.location.href='index.html'" class="btn btn-success">
+            &#8592;
         </button>
-    </div><br>
-    <div class="container">
-        <h1 class="mt-5 text-center">Meu Perfil</h1>
-        <form id="perfilForm" class="mt-4">
+    </div>
+
+    <div class="profile-container">
+        <!-- Lado esquerdo (Verde) -->
+        <div class="left-side">
+            <img src="img/LogoOficial.png" alt="Imagem ilustrativa">
+            <h3>Gerencie seu perfil com facilidade!</h3>
+            <p>Atualize suas informações e mantenha sua conta segura.</p>
+        </div>
+
+        <!-- Lado direito (Formulário) -->
+        <form id="perfilForm" class="right-side">
+            <h3 class="text-center">Meu Perfil</h3>
             <div class="form-group">
                 <label for="nome">Nome:</label>
                 <input type="text" class="form-control" id="nome" required>
@@ -70,43 +126,12 @@
                 <label for="horario">Horário de Funcionamento:</label>
                 <input type="text" class="form-control" id="horario">
             </div>
-            <button type="button" class="btn btn-primary" onclick="atualizarConta()">Atualizar Conta</button>
-            <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>
-        </form>
-        <div id="mensagem" class="mt-3"></div>
-    </div>
-
-    <!-- Modal de Alerta Genérico -->
-    <div class="modal fade" id="genericModal" tabindex="-1" aria-labelledby="genericModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="genericModalLabel">Título do Alerta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="modalMessage">
-                    <!-- Mensagem do alerta será inserida aqui -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="modalButton" data-dismiss="modal">Fechar</button>
-                </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary" onclick="atualizarConta()">Atualizar Conta</button>
+                <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>
             </div>
-        </div>
+        </form>
     </div>
-
-    <script>
-        // Função para abrir o modal manualmente (caso precise)
-        function abrirModal(titulo, mensagem) {
-            document.getElementById('genericModalLabel').innerText = titulo;
-            document.getElementById('modalMessage').innerText = mensagem;
-            $('#genericModal').modal('show');
-        }
-        
-        // A função abaixo já está funcionando corretamente no Bootstrap 4
-        // Não há necessidade de adicionar um código extra para fechar o modal
-    </script>
 
 </body>
 
